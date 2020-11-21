@@ -1,0 +1,24 @@
+#gameArea {
+  height: 560px;
+  max-width: 560px;
+  margin: 100px auto auto auto;
+  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  border: 2px solid #111111;
+}
+
+svg rect {
+  fill: #019e0c;
+  stroke-width: 2;
+  stroke: #111111;
+}
+
+.black {
+  fill: #111111;
+}
+
+.white {
+  fill: white;
+}
