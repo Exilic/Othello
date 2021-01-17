@@ -1,29 +1,9 @@
-var gameArea = document.getElementById("gameArea");
-for (let yCount = 1; yCount < 9; yCount++) {
-  for (let xCount = 1; xCount < 9; xCount++) {
-    let newSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    newSVG.setAttribute("width", "70");
-    newSVG.setAttribute("height", "70");
-    newSVG.setAttribute("id", "y" + yCount + "x" + xCount);
-    gameArea.appendChild(newSVG);
-    let newRect = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "rect"
-    );
-    newRect.setAttribute("width", "70");
-    newRect.setAttribute("height", "70");
-    newSVG.appendChild(newRect);
-  }
-}
+const gameArea = document.getElementById("gameArea");
+let goodAttempt = false;
+let playColor = "white";
 
-var goodAttempt = false;
-var playColor = "white";
-
-makeCircle("y4x4");
-makeCircle("y5x5");
-flipTurn();
-makeCircle("y4x5");
-makeCircle("y5x4");
+const makeElement = (kind) => document.createElementNS("http://www.w3.org/2000/svg", kind);
+const setSvgAttribute = (target, kind, value) => target.setAttribute(kind, value);
 
 function flipTurn() {
   if (playColor == "white") {
@@ -34,14 +14,14 @@ function flipTurn() {
 }
 
 function makeCircle(gridID) {
-  let newCircle = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "circle"
-  );
-  newCircle.setAttribute("cx", "35");
-  newCircle.setAttribute("cy", "35");
-  newCircle.setAttribute("r", "28");
-  newCircle.setAttribute("class", playColor);
+  let newCircle = makeElement("circle");
+  for (const [a, b] of [
+    ["cx", "35"],
+    ["cy", "35"],
+    ["r", "28"],
+    ["class", playColor],
+  ])
+    setSvgAttribute(newCircle, a, b);
   document.getElementById(gridID).appendChild(newCircle);
 }
 
@@ -108,12 +88,7 @@ function coreMechanics(yIndex, xIndex, y, x) {
 }
 
 function outOfArea(yNeighbour, xNeighbour) {
-  if (
-    yNeighbour == 0 ||
-    yNeighbour == 9 ||
-    xNeighbour == 0 ||
-    xNeighbour == 9
-  ) {
+  if (yNeighbour == 0 || yNeighbour == 9 || xNeighbour == 0 || xNeighbour == 9) {
     return true;
   } else {
     return false;
@@ -142,7 +117,33 @@ function changeColor(gridID) {
   }
 }
 
-let myTarget = document.getElementById("gameArea");
-myTarget.addEventListener("click", function (e) {
+window.addEventListener("load", (e) => {
+  for (let yCount = 1; yCount < 9; yCount++) {
+    for (let xCount = 1; xCount < 9; xCount++) {
+      let newSVG = makeElement("svg");
+      for (const [a, b] of [
+        ["width", "70"],
+        ["height", "70"],
+        ["id", "y" + yCount + "x" + xCount],
+      ])
+        setSvgAttribute(newSVG, a, b);
+      gameArea.appendChild(newSVG);
+
+      let newRect = makeElement("rect");
+      for (const [c, d] of [
+        ["width", "70"],
+        ["height", "70"],
+      ])
+        setSvgAttribute(newRect, c, d);
+      newSVG.appendChild(newRect);
+    }
+  }
+
+  ["y4x4", "y5x5"].forEach(makeCircle);
+  flipTurn();
+  ["y4x5", "y5x4"].forEach(makeCircle);
+});
+
+gameArea.addEventListener("click", (e) => {
   attemptedMove(e.path[1].getAttribute("id"));
 });
