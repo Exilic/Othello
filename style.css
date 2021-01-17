@@ -1,7 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Playfair Display", serif;
+  display: grid;
+  grid-template-columns: 400px 564px auto;
+}
+
+h1 {
+  grid-column: 1 / 2;
+}
+
 #gameArea {
+  grid-column: 2 / 3;
   height: 560px;
   max-width: 560px;
-  margin: 100px auto auto auto;
+  margin: 50px auto auto auto;
   padding: 0px;
   display: flex;
   flex-wrap: wrap;
